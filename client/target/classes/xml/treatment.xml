@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<treatments>
+    <treatment>
+        <code>1</code>
+        <name>enkelmassage</name>
+        <priceTreatment>1000.0</priceTreatment>
+        <sessionDuration>40.0</sessionDuration>
+        <numberOfSessions>4</numberOfSessions>
+    </treatment>
+    <treatment>
+        <code>2</code>
+        <name>voetkraken</name>
+        <priceTreatment>2000.0</priceTreatment>
+        <sessionDuration>20.0</sessionDuration>
+        <numberOfSessions>2</numberOfSessions>
+    </treatment>
+</treatments>

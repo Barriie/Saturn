@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<appointments>
+    <appointment>
+        <appointmentDate>2015-12-04</appointmentDate>
+        <appointmentFysio city="Tilburg" country="" houseNumber="Hier 1" street="" postalCode="5044 PA">
+            <address> Hier 1 Tilburg</address>
+            <ssn>1</ssn>
+            <dateOfBirth>05-08-1992</dateOfBirth>
+            <function>test</function>
+            <name>Mark</name>
+            <employeeId>1</employeeId>
+            <phone>0614744368</phone>
+        </appointmentFysio>
+        <appointmentFysioName>Mark</appointmentFysioName>
+        <appointmentNumber>1</appointmentNumber>
+        <appointmentPatient city="Tilburg" country="Nederland" houseNumber="17" street="Zwartvenseweg" postalCode="5044 PA">
+            <address>Zwartvenseweg 17 Tilburg</address>
+            <ssn>2</ssn>
+            <dateOfBirth>2015-12-04</dateOfBirth>
+            <email>mlajturn@avans.nl</email>
+            <firstName>Mark</firstName>
+            <patientFullName>Mark van Turnhout</patientFullName>
+            <lastName>van Turnhout</lastName>
+            <phone>0614740368</phone>
+        </appointmentPatient>
+        <appointmentPatientName>Mark van Turnhout</appointmentPatientName>
+        <appointmentStartTimeString>22:00</appointmentStartTimeString>
+        <appointmentStopTimeString>00:00</appointmentStopTimeString>
+    </appointment>
+</appointments>

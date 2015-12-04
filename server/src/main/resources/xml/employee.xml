@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employees>
+    <employee city="Tilburg" country="" houseNumber="Hier 1" street="" postalCode="5044 PA">
+        <address> Hier 1 Tilburg</address>
+        <ssn>1</ssn>
+        <dateOfBirth>05-08-1992</dateOfBirth>
+        <mail>test@test.test</mail>
+        <function>test</function>
+        <name>Mark</name>
+        <employeeId>1</employeeId>
+        <phone>0614744368</phone>
+    </employee>
+</employees>
