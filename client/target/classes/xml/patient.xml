@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <patients>
-    <patient city="Tilburg" country="Nederland" houseNumber="17" street="Zwartvenseweg" postalCode="5044 PA">
+    <patient>
         <address>Zwartvenseweg 17 Tilburg</address>
         <ssn>2</ssn>
-        <dateOfBirth>2015-12-04</dateOfBirth>
+        <dateOfBirth></dateOfBirth>
         <email>mlajturn@avans.nl</email>
         <firstName>Mark</firstName>
-        <patientFullName>Mark van Turnhout</patientFullName>
         <lastName>van Turnhout</lastName>
         <phone>0614740368</phone>
+    </patient>
+    <patient>
+        <address>asdasd Nederland asdas</address>
+        <ssn>2133123</ssn>
+        <city>asdas</city>
+        <country>12</country>
+        <dateOfBirth>11-11-2011</dateOfBirth>
+        <email>aaa</email>
+        <firstName>asd</firstName>
+        <fullName>asd asd</fullName>
+        <houseNumber>Nederland</houseNumber>
+        <lastName>asd</lastName>
+        <phone>121</phone>
+        <street>asdasd</street>
+        <zipCode>1111 bb</zipCode>
+    </patient>
+    <patient>
+        <address>aaa Nederland aaaa</address>
+        <ssn>122</ssn>
+        <city>aaaa</city>
+        <country>1</country>
+        <dateOfBirth>01-01-2000</dateOfBirth>
+        <email>aaaa</email>
+        <firstName>aa</firstName>
+        <fullName>aa aa</fullName>
+        <houseNumber>Nederland</houseNumber>
+        <lastName>aa</lastName>
+        <phone>111</phone>
+        <street>aaa</street>
+        <zipCode>1212 aa</zipCode>
     </patient>
 </patients>

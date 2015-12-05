@@ -153,7 +153,7 @@ public class AppointmentManager {
     public ObservableList<Appointment> searchWithPatientBSN(int BSN) {
         ObservableList<Appointment> tempAppointments = FXCollections.observableArrayList();
         for (Appointment a : data) {
-            if (a.getAppointmentPatient().getPatientBSN() == BSN) {
+            if (a.getAppointmentPatient().getPatientBSN().equals(BSN)) {
                 tempAppointments.add(a);
             }
         }

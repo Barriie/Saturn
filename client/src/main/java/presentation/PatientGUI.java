@@ -19,10 +19,10 @@ import java.time.LocalDate;
 
 public class PatientGUI extends Application {
     //region Attributes and properties
-    private TableView<Appointment> table;
+    private TableView<Patient> table;
     private DataManager dataManager = new DataManager();
+    private ValidateInput validate;
 
-    private HBox hBox = new HBox();
     private VBox vBox = new VBox();
     private BorderPane borderPane = new BorderPane();
     private GridPane gridPane = new GridPane();
@@ -53,16 +53,22 @@ public class PatientGUI extends Application {
     private Label phoneLabel;
     private Label emailLabel;
 
-    TableColumn numberCol = new TableColumn("Nummer");
-    TableColumn datumCol = new TableColumn("Datum");
-    TableColumn startTimeCol = new TableColumn("Van");
-    TableColumn stopTimeCol = new TableColumn("Tot");
-    TableColumn fysioCol = new TableColumn("Fysio");
+    TableColumn bsnCol = new TableColumn("Bsn");
+    TableColumn fullNameCol = new TableColumn("Naam");
+    TableColumn addressCol = new TableColumn("Adres");
+    TableColumn countryCol = new TableColumn("Land");
+    TableColumn dateOfBirthCol = new TableColumn("Geboortedatum");
+    TableColumn zipCodeCol = new TableColumn("Postcode");
+    TableColumn phoneCol = new TableColumn("Telefoonnummer");
+    TableColumn mailCol = new TableColumn("E-mail");
     //endregion
 
     @Override
     public void start(Stage stage) throws Exception {
         table = new TableView<>();
+        validate = new ValidateInput();
+
+        stage.setTitle("Fysio App");
 
         table.setEditable(true);
         Callback<TableColumn, TableCell> cellFactory =
@@ -115,16 +121,55 @@ public class PatientGUI extends Application {
 
         //region Creating columns for tables
 
-        numberCol.setCellValueFactory(
-                new PropertyValueFactory<Appointment, Integer>("appointmentNumber"));
-        datumCol.setCellValueFactory(
-                new PropertyValueFactory<Appointment, LocalDate>("appointmentDate"));
-        startTimeCol.setCellValueFactory(
-                new PropertyValueFactory<Appointment, LocalDate>("appointmentStartTimeString"));
-        stopTimeCol.setCellValueFactory(
-                new PropertyValueFactory<Appointment, LocalDate>("appointmentStopTimeString"));
-        fysioCol.setCellValueFactory(
-                new PropertyValueFactory<Appointment, String>("appointmentFysioName"));
+        bsnCol.setCellValueFactory(
+                new PropertyValueFactory<Patient, String>("patientBSN"));
+        fullNameCol.setCellFactory(
+                new PropertyValueFactory<Patient, String>("patientFullName"));
+        addressCol.setCellFactory(
+                new PropertyValueFactory<Patient, String>("patientAddress"));
+        countryCol.setCellFactory(
+                new PropertyValueFactory<Patient, String>("patientCountry"));
+        dateOfBirthCol.setCellValueFactory(
+                new PropertyValueFactory<Patient, String>("patientDateOfBirth"));
+        zipCodeCol.setCellFactory(
+                new PropertyValueFactory<Patient, String>("patientZipCode"));
+        phoneCol.setCellFactory(
+                new PropertyValueFactory<Patient, String>("patientPhone"));
+        mailCol.setCellFactory(
+                new PropertyValueFactory<Patient, String>("patientEmail"));
+        //endregion
+
+        //region Creating textfields
+        final TextField addBsn = new TextField();
+        addBsn.setMaxWidth(bsnCol.getPrefWidth());
+        addBsn.setPromptText("BSN");
+
+        final TextField addFirstName = new TextField();
+        addFirstName.setPromptText("Voornaam");
+
+        final TextField addLastName = new TextField();
+        addLastName.setPromptText("Achternaam");
+
+        final TextField addCity = new TextField();
+        addCity.setPromptText("Stad");
+
+        final TextField addHouseNumber = new TextField();
+        addHouseNumber.setPromptText("Huisnummer");
+
+        final TextField addStreet = new TextField();
+        addStreet.setPromptText("Straat");
+
+        final TextField addDateOfBirth = new TextField();
+        addDateOfBirth.setPromptText("Geboortedatum");
+
+        final TextField addZipCode = new TextField();
+        addZipCode.setPromptText("Postcode");
+
+        final TextField addPhone = new TextField();
+        addPhone.setPromptText("Telefoonnummer");
+
+        final TextField addMail = new TextField();
+        addMail.setPromptText("E-mail");
         //endregion
 
         //region Creating buttons
@@ -155,20 +200,108 @@ public class PatientGUI extends Application {
         phoneLabel.setMinWidth(100);
         emailLabel.setMinWidth(100);
 
-        patientBSN = new TextField();
-        patientBSN.setPromptText("BSN");
+        Button removeButton = new Button("Verwijder");
+        removeButton.setOnAction(e -> {
+
+        });
+
+        Button addButton = new Button("Voeg Toe");
+        addButton.setOnAction(e -> {
+            Patient tempPatient = null;
+            if (!addBsn.getText().equals("")) {
+                tempPatient = dataManager.patientManager.searchWithBSN(addBsn.getText());
+            } else {
+                AlertBox.display("Error", "Er is geen bsn ingevuld");
+            }
+
+            if (tempPatient != null) {
+                AlertBox.display("Error", "Patient met BSN: " + tempPatient.getPatientBSN() + "bestaat al onder de naam: " + tempPatient.getPatientFullName());
+            } else if (!validate.validateNumber(addBsn.getText())) {
+                AlertBox.display("Error", addBsn.getText() + " is geen geldig bsn");
+                addBsn.clear();
+            } else if (addFirstName.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen voornaam ingevuld");
+            } else if (!validate.validateName(addFirstName.getText())) {
+                AlertBox.display("Error", "Voornaam mag alleen uit letters bestaan");
+                addFirstName.clear();
+            } else if (addLastName.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen achternaam ingevuld");
+            } else if (!validate.validateName(addLastName.getText())) {
+                AlertBox.display("Error", "Achternaam mag alleen uit letters bestaan");
+                addLastName.clear();
+            } else if (addStreet.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen adres ingevuld");
+            } else if (!validate.validateName(addStreet.getText())) {
+                AlertBox.display("Error", "Adres mag alleen letters bevatten");
+                addStreet.clear();
+            } else if (addHouseNumber.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen huisnummer ingevuld");
+            } else if (!validate.validateNumber(addHouseNumber.getText())) {
+                AlertBox.display("Error", "Huisnummer mag alleen cijfers bevatten");
+                addHouseNumber.clear();
+            } else if (addCity.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen stad ingevuld");
+            } else if (!validate.validateName(addCity.getText())) {
+                AlertBox.display("Error", addCity.getText() + " is geen geldige stad");
+                addCity.clear();
+            } else if (addZipCode.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen postcode ingevuld");
+            } else if (!validate.validateZipCode(addZipCode.getText())) {
+                AlertBox.display("Error", addZipCode.getText() + " is geen geldige postcode");
+                addZipCode.clear();
+            } else if (addDateOfBirth.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen geboortedatum ingevuld");
+            } else if (!validate.validateDateOfBirth(addDateOfBirth.getText())) {
+                AlertBox.display("Error", addDateOfBirth.getText() + " is geen geldige geboortedatum");
+                addDateOfBirth.clear();
+            } else if (addPhone.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen telefoonnummer ingevuld");
+            } else if (!validate.validateNumber(addPhone.getText())) {
+                AlertBox.display("Error", addPhone.getText() + " is geen geldig telefoonnummer \n(Let op: U mag geen - gebruiken!");
+                addPhone.clear();
+            } else if (addMail.getText().equals("")) {
+                AlertBox.display("Error", "Er is geen email ingevuld");
+            } else {
+                Patient newPatient = new Patient(
+                        addBsn.getText(),
+                        addFirstName.getText(),
+                        addLastName.getText(),
+                        addCity.getText(),
+                        addHouseNumber.getText(),
+                        addStreet.getText(),
+                        "Nederland",
+                        addDateOfBirth.getText(),
+                        addZipCode.getText(),
+                        addPhone.getText(),
+                        addMail.getText()
+                );
+                if (!dataManager.patientManager.addPatient(newPatient)) {
+                    AlertBox.display("Error", "Patient" + newPatient.getPatientFullName() + " is niet toegevoegd");
+                } else {
+                    addFirstName.clear();
+                    addLastName.clear();
+                    addBsn.clear();
+                    addHouseNumber.clear();
+                    addCity.clear();
+                    addStreet.clear();
+                    addDateOfBirth.clear();
+                    addZipCode.clear();
+                    addPhone.clear();
+                    addMail.clear();
+                }
+
+            }
+        });
+
 
         searchButton = new Button("Zoek");
         searchButton.setOnAction(e -> searchWithBSN());
         //endregion
 
-        table.getColumns().addAll(numberCol, datumCol, startTimeCol, stopTimeCol, fysioCol);
-        hBox.getChildren().addAll(patientBSN, searchButton);
-        hBox.setSpacing(10);
-        gridPane.addColumn(0, BSN, NAME, ADDRESS, ZIPCODE, CITY, DATEOFBIRTH, PHONE, EMAIL);
-        gridPane.addColumn(1, bsnLabel, nameLabel, adressLabel, zipcodeLabel, cityLabel, dateOfBirthLabel, phoneLabel, emailLabel);
-        vBox.getChildren().addAll(hBox, gridPane);
 
+        table.getColumns().addAll(bsnCol, fullNameCol, addressCol, countryCol, dateOfBirthCol, zipCodeCol, phoneCol, mailCol);
+        vBox.getChildren().addAll(addBsn, addFirstName, addLastName, addStreet, addHouseNumber, addCity, addZipCode, addDateOfBirth, addPhone, addMail, addButton, removeButton);
+        vBox.setSpacing(5);
 
         borderPane.setLeft(vBox);
         borderPane.setCenter(table);
@@ -193,8 +326,7 @@ public class PatientGUI extends Application {
         if (patientBSN.getText().equals("")) {
             AlertBox.display("Foutmelding", "Geen medewerkersnummer ingevoerd");
         } else {
-            int bsn = Integer.parseInt(patientBSN.getText());
-            Patient tempPatient = dataManager.patientManager.searchWithBSN(bsn);
+            Patient tempPatient = dataManager.patientManager.searchWithBSN(patientBSN.getText());
 
             if (tempPatient != null) {
                 bsnLabel.setText(String.valueOf(tempPatient.getPatientBSN()));
@@ -205,46 +337,9 @@ public class PatientGUI extends Application {
                 dateOfBirthLabel.setText(String.valueOf(tempPatient.getPatientDateOfBirth()));
                 phoneLabel.setText(tempPatient.getPatientPhone());
                 emailLabel.setText(tempPatient.getPatientEmail());
-                ObservableList<Appointment> data = dataManager.appointmentManager.searchWithPatientBSN(tempPatient.getPatientBSN());
-                table.setItems(data);
 
-                for (Appointment aData : data) {
-                    int lenght = 0;
-                    if (aData.getAppointmentNumber().toString().length() > lenght) {
-                        lenght = aData.getAppointmentNumber().toString().length();
-                        numberCol.setMinWidth(lenght * 8.5);
-                    }
-                }
-                for (Appointment aData : data) {
-                    int lenght = 0;
-                    if (aData.getAppointmentDate().toString().length() > lenght) {
-                        lenght = aData.getAppointmentDate().toString().length();
-                        datumCol.setMinWidth(lenght * 8.5);
-                    }
-                }
-                for (Appointment aData : data) {
-                    int lenght = 0;
-                    if (aData.getAppointmentStartTimeString().length() > lenght) {
-                        lenght = aData.getAppointmentStartTimeString().length();
-                        startTimeCol.setMinWidth(lenght * 8.5);
-                    }
-                }
-                for (Appointment aData : data) {
-                    int lenght = 0;
-                    if (aData.getAppointmentStopTimeString().length() > lenght) {
-                        lenght = aData.getAppointmentStopTimeString().length();
-                        stopTimeCol.setMinWidth(lenght * 8.5);
-                    }
-                }
-                for (Appointment aData : data) {
-                    int lenght = 0;
-                    if (aData.getAppointmentFysioName().length() > lenght) {
-                        lenght = aData.getAppointmentFysioName().length();
-                        fysioCol.setMinWidth(lenght * 8.5);
-                    }
-                }
             } else {
-                AlertBox.display("Foutmelding", "Geen patient gevonden met BSN: " + bsn);
+                AlertBox.display("Foutmelding", "Geen patient gevonden met BSN: " + patientBSN.getText());
             }
         }
     }

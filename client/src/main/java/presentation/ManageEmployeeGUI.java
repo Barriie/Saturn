@@ -203,25 +203,13 @@ public class ManageEmployeeGUI extends Application {
                     }
                 }
         );
-        cityCol.setCellValueFactory(
-                new PropertyValueFactory<Employee, String>("employeeCity"));
-        cityCol.setCellFactory(cellFactory);
-        cityCol.setOnEditCommit(
+        addressCol.setCellValueFactory(
+                new PropertyValueFactory<Employee, String>("employeeAddress"));
+        addressCol.setCellFactory(cellFactory);
+        addressCol.setOnEditCommit(
                 new EventHandler<CellEditEvent<Employee, String>>() {
                     @Override
                     public void handle(CellEditEvent<Employee, String> t) {
-                        if (validate.validateName(t.getNewValue())) {
-                            t.getTableView().getItems().get(
-                                    t.getTablePosition().getRow()).setEmployeeCity(t.getNewValue());
-                            table.getColumns().get(0).setVisible(false);
-                            table.getColumns().get(0).setVisible(true);
-                        } else {
-                            AlertBox.display("Foutmelding", t.getNewValue() + " is geen geldige stad");
-                            t.getTableView().getItems().get(
-                                    t.getTablePosition().getRow()).setEmployeeCity(t.getOldValue());
-                            table.getColumns().get(0).setVisible(false);
-                            table.getColumns().get(0).setVisible(true);
-                        }
                     }
                 }
         );
@@ -244,42 +232,6 @@ public class ManageEmployeeGUI extends Application {
                             table.getColumns().get(0).setVisible(false);
                             table.getColumns().get(0).setVisible(true);
                         }
-                    }
-                }
-        );
-        houseCol.setCellValueFactory(
-                new PropertyValueFactory<Employee, String>("employeeHouseNumber"));
-        houseCol.setCellFactory(cellFactory);
-        houseCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Employee, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Employee, String> t) {
-                        if (validate.validateName(t.getNewValue())) {
-                            t.getTableView().getItems().get(
-                                    t.getTablePosition().getRow()).setEmployeeHouseNumber(t.getNewValue());
-                            table.getColumns().get(0).setVisible(false);
-                            table.getColumns().get(0).setVisible(true);
-                        } else {
-                            AlertBox.display("Foutmelding", t.getNewValue() + " is geen geldig huis nummer");
-                            t.getTableView().getItems().get(
-                                    t.getTablePosition().getRow()).setEmployeeHouseNumber(t.getOldValue());
-                            table.getColumns().get(0).setVisible(false);
-                            table.getColumns().get(0).setVisible(true);
-                        }
-                    }
-                }
-        );
-        streetCol.setCellValueFactory(
-                new PropertyValueFactory<Employee, String>("employeeStreet"));
-        streetCol.setCellFactory(cellFactory);
-        streetCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Employee, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Employee, String> t) {
-                        t.getTableView().getItems().get(
-                                t.getTablePosition().getRow()).setEmployeeStreet(t.getNewValue());
-                        table.getColumns().get(0).setVisible(false);
-                        table.getColumns().get(0).setVisible(true);
                     }
                 }
         );
@@ -382,6 +334,18 @@ public class ManageEmployeeGUI extends Application {
         addBsn.setMaxWidth(bsnCol.getPrefWidth());
         addBsn.setPromptText("BSN");
 
+        final TextField addStreet = new TextField();
+        addStreet.setMaxWidth(streetCol.getPrefWidth());
+        addStreet.setPromptText("Straat");
+
+        final TextField addHouseNumber = new TextField();
+        addHouseNumber.setMaxWidth(houseCol.getPrefWidth());
+        addHouseNumber.setPromptText("Huisnummer");
+
+        final TextField addZipCode = new TextField();
+        addZipCode.setMaxWidth(zipCodeCol.getPrefWidth());
+        addZipCode.setPromptText("Postcode");
+
         final TextField addCity = new TextField();
         addCity.setMaxWidth(cityCol.getPrefWidth());
         addCity.setPromptText("Stad");
@@ -390,21 +354,9 @@ public class ManageEmployeeGUI extends Application {
         addCountry.setMaxWidth(countryCol.getPrefWidth());
         addCountry.setPromptText("Land");
 
-        final TextField addHouseNumber = new TextField();
-        addHouseNumber.setMaxWidth(houseCol.getPrefWidth());
-        addHouseNumber.setPromptText("Huisnummer");
-
-        final TextField addStreet = new TextField();
-        addStreet.setMaxWidth(streetCol.getPrefWidth());
-        addStreet.setPromptText("Straat");
-
         final TextField addDateOfBirth = new TextField();
         addDateOfBirth.setMaxWidth(addDateOfBirth.getPrefWidth());
         addDateOfBirth.setPromptText("Geboortedatum");
-
-        final TextField addZipCode = new TextField();
-        addZipCode.setMaxWidth(zipCodeCol.getPrefWidth());
-        addZipCode.setPromptText("Postcode");
 
         final TextField addPhone = new TextField();
         addPhone.setMaxWidth(phoneCol.getPrefWidth());
@@ -416,7 +368,7 @@ public class ManageEmployeeGUI extends Application {
         //endregion
 
         //region Creating buttons
-        final Button deleteButton = new Button("Delete");
+        final Button deleteButton = new Button("Verwijder");
         deleteButton.setOnAction(e -> {
                     Employee tempEmployee = table.getSelectionModel().getSelectedItem();
 
@@ -432,8 +384,9 @@ public class ManageEmployeeGUI extends Application {
                 }
         );
 
-        final Button addButton = new Button("Add");
+        final Button addButton = new Button("Voeg toe");
         addButton.setOnAction(e -> {
+
                     Employee tempEmployee = dataManager.employeeManager.searchEmployeeWithNumber(addNr.getText());
 
                     if (addNr.getText().equals("")) {
@@ -459,23 +412,31 @@ public class ManageEmployeeGUI extends Application {
                     } else if (!validate.validateNumber(addBsn.getText())) {
                         AlertBox.display("Error", addBsn.getText() + " is geen geldig bsn");
                         addBsn.clear();
+                    } else if (addStreet.getText().equals("")) {
+                        AlertBox.display("Error", "Er is geen adres ingevuld");
+                    } else if (!validate.validateName(addStreet.getText())) {
+                        AlertBox.display("Error", "Adres mag alleen letters bevatten");
+                        addStreet.clear();
+                    } else if (addHouseNumber.getText().equals("")) {
+                        AlertBox.display("Error", "Er is geen huisnummer ingevuld");
+                    } else if (!validate.validateNumber(addHouseNumber.getText())) {
+                        AlertBox.display("Error", "Huisnummer mag alleen cijfers bevatten");
+                        addHouseNumber.clear();
                     } else if (addCity.getText().equals("")) {
                         AlertBox.display("Error", "Er is geen stad ingevuld");
                     } else if (!validate.validateName(addCity.getText())) {
                         AlertBox.display("Error", addCity.getText() + " is geen geldige stad");
                         addCity.clear();
-                    } else if (addStreet.getText().equals("")) {
-                        AlertBox.display("Error", "Er is geen adres ingevuld");
-                    } else if (addDateOfBirth.getText().equals("")) {
-                        AlertBox.display("Error", "Er is geen geboortedatum ingevuld");
-                    } else if (!validate.validateDateOfBirth(addDateOfBirth.getText())) {
-                        AlertBox.display("Error", addDateOfBirth.getText() + " is geen geldige geboortedatum");
-                        addDateOfBirth.clear();
                     } else if (addZipCode.getText().equals("")) {
                         AlertBox.display("Error", "Er is geen postcode ingevuld");
                     } else if (!validate.validateZipCode(addZipCode.getText())) {
                         AlertBox.display("Error", addZipCode.getText() + " is geen geldige postcode");
                         addZipCode.clear();
+                    } else if (addDateOfBirth.getText().equals("")) {
+                        AlertBox.display("Error", "Er is geen geboortedatum ingevuld");
+                    } else if (!validate.validateDateOfBirth(addDateOfBirth.getText())) {
+                        AlertBox.display("Error", addDateOfBirth.getText() + " is geen geldige geboortedatum");
+                        addDateOfBirth.clear();
                     } else if (addPhone.getText().equals("")) {
                         AlertBox.display("Error", "Er is geen telefoonnummer ingevuld");
                     } else if (!validate.validateNumber(addPhone.getText())) {
@@ -490,9 +451,9 @@ public class ManageEmployeeGUI extends Application {
                                 addFunction.getText(),
                                 addBsn.getText(),
                                 addCity.getText(),
-                                addCountry.getText(),
-                                addHouseNumber.getText(),
+                                "Nederland",
                                 addStreet.getText(),
+                                addHouseNumber.getText(),
                                 addDateOfBirth.getText(),
                                 addZipCode.getText(),
                                 addPhone.getText(),
@@ -511,6 +472,7 @@ public class ManageEmployeeGUI extends Application {
                         addName.clear();
                         addFunction.clear();
                         addBsn.clear();
+                        addHouseNumber.clear();
                         addCity.clear();
                         addStreet.clear();
                         addDateOfBirth.clear();
@@ -522,94 +484,97 @@ public class ManageEmployeeGUI extends Application {
         );
         //endregion
 
+        //region Setting table width
         table.setItems(dataManager.employeeManager.getData());
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeNr().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeNr().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeNr().length();
-                employeeNrCol.setMinWidth(lenght*8.5);
+                employeeNrCol.setMinWidth(lenght * 8.5);
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeName().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeName().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeName().length();
-                nameCol.setMinWidth(lenght*8.5);
+                nameCol.setMinWidth(lenght * 8.5);
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeFunction().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeFunction().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeFunction().length();
-                functionCol.setMinWidth(lenght*8.5);
+                functionCol.setMinWidth(lenght * 8.5);
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeBSN().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeBSN().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeBSN().length();
-                bsnCol.setMinWidth(lenght*8.5);
+                bsnCol.setMinWidth(lenght * 8.5);
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeCity().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeCity().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeCity().length();
-                cityCol.setMinWidth(lenght*8.5);
+                cityCol.setMinWidth(lenght * 8.5);
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeAddress().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeAddress().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeAddress().length();
-                addressCol.setMinWidth(lenght*8.5);
+                addressCol.setMinWidth(lenght * 8.5);
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeDateOfBirth().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeDateOfBirth().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeDateOfBirth().length();
-                if (lenght>dateOfBirthCol.getText().length()) {
+                if (lenght > dateOfBirthCol.getText().length()) {
                     dateOfBirthCol.setMinWidth(lenght * 8.5);
                 }
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeZipCode().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeZipCode().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeZipCode().length();
-                zipCodeCol.setMinWidth(lenght*8.5);
+                zipCodeCol.setMinWidth(lenght * 8.5);
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeePhone().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeePhone().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeePhone().length();
-                if (lenght>phoneCol.getText().length()) {
+                if (lenght > phoneCol.getText().length()) {
                     phoneCol.setMinWidth(lenght * 8.5);
                 }
             }
         }
-        for (int i = 0;i<dataManager.employeeManager.getData().size();i++){
+        for (int i = 0; i < dataManager.employeeManager.getData().size(); i++) {
             int lenght = 0;
-            if (lenght <dataManager.employeeManager.getData().get(i).getEmployeeEmail().length()){
+            if (lenght < dataManager.employeeManager.getData().get(i).getEmployeeEmail().length()) {
                 lenght = dataManager.employeeManager.getData().get(i).getEmployeeEmail().length();
-                emailCol.setMinWidth(lenght*8.5);
+                emailCol.setMinWidth(lenght * 8.5);
             }
         }
+        //endregion
+
         table.getColumns()
                 .addAll(employeeNrCol, nameCol, functionCol, bsnCol, cityCol, addressCol, dateOfBirthCol, zipCodeCol, phoneCol, emailCol);
 
         vBox.getChildren()
-                .addAll(addNr, addName, addFunction, addBsn, addCity, addStreet, addDateOfBirth, addZipCode, addPhone, addEmail, addButton, deleteButton);
+                .addAll(addNr, addName, addFunction, addBsn, addStreet, addHouseNumber, addCity, addZipCode, addDateOfBirth, addPhone, addEmail, addButton, deleteButton);
         vBox.setSpacing(5);
 
         borderPane.setLeft(vBox);
         borderPane.setCenter(table);
         borderPane.setPrefSize(1200, 600);
         borderPane.setPadding(new Insets(10, 20, 10, 20));
-        borderPane.setMargin(vBox, new Insets(12,12,12,12));
-        borderPane.setMargin(table, new Insets(12,12,12,12));
+        borderPane.setMargin(vBox, new Insets(12, 12, 12, 12));
+        borderPane.setMargin(table, new Insets(12, 12, 12, 12));
 
         pane.getTabs().addAll(appointmentTab, employeeTab, customerTab, manageEmployeeTab);
         manageEmployeeTab.setContent(borderPane);

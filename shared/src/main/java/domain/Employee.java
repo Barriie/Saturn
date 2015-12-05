@@ -51,6 +51,7 @@ public class Employee {
         setEmployeeDateOfBirth(employeeDateOfBirth);
         setEmployeeZipCode(employeeZipCode);
         setEmployeePhone(employeePhone);
+        setEmployeeEmail(employeeMail);
         setEmployeeAddress(employeeStreet + " " + employeeHouseNumber + " " + employeeCity);
 
         this.employeeWorkdays = new ArrayList<>();

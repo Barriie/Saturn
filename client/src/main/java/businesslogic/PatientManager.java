@@ -18,8 +18,8 @@ import static javax.xml.bind.JAXBContext.newInstance;
 
 public class PatientManager {
     //region Attributes and properties
-    private ObservableList<Patient> data = Load();
     private Patients patients = new Patients();
+    private ObservableList<Patient> data = Load();
     File file = new File("Saturn\\server\\src\\main\\resources\\xml\\patient.xml");
     //endregion
 
@@ -28,8 +28,7 @@ public class PatientManager {
 
     }
 
-    public ObservableList<Patient> Load()
-    {
+    public ObservableList<Patient> Load() {
         ObservableList<Patient> returnList = FXCollections.observableArrayList();
 
         try {
@@ -49,8 +48,6 @@ public class PatientManager {
 
     public boolean Save() {
         boolean tempBool = true;
-
-
         try {
             File tempFile = new File("Saturn\\server\\src\\main\\resources\\xml\\patient.xml");
             Patients tempList = new Patients();
@@ -73,8 +70,11 @@ public class PatientManager {
         return tempBool;
     }
 
+    public ObservableList<Patient> getData() {
+        return data;
+    }
+
     /**
-     *
      * @return List with all the names of patients
      */
     public ObservableList<String> getPatientNames() {
@@ -88,7 +88,6 @@ public class PatientManager {
     }
 
     /**
-     *
      * @param patientName Name belonging to an patient
      * @return The patient the patientName belongs to
      */
@@ -103,7 +102,6 @@ public class PatientManager {
     }
 
     /**
-     *
      * @param patient A patient object
      * @return True if the patient has been added
      */
@@ -120,7 +118,6 @@ public class PatientManager {
     }
 
     /**
-     *
      * @param patient A patient object
      * @return Returns true if the patient has been removed
      */
@@ -137,16 +134,17 @@ public class PatientManager {
     }
 
     /**
-     *
      * @param BSN The BSN belonging to the patient
      * @return The patient the BSN belongs to
      */
-    public Patient searchWithBSN(int BSN) {
+    public Patient searchWithBSN(String BSN) {
         Patient tempPatient = null;
 
         for (Patient p : data) {
-            if (p.getPatientBSN() == BSN) {
-                tempPatient = p;
+            if (p.getPatientBSN() != null) {
+                if (p.getPatientBSN().equals(BSN)) {
+                    tempPatient = p;
+                }
             }
         }
 
