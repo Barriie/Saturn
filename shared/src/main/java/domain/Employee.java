@@ -27,7 +27,7 @@ public class Employee {
     private SimpleStringProperty employeeAddress = new SimpleStringProperty(this, "employeeAddress");
 
 
-    private ArrayList<Workday> employeeWorkdays;
+    private ArrayList<Workday> employeeWorkdays= new ArrayList<>();
     //endregion
 
     public Employee(){
@@ -53,15 +53,13 @@ public class Employee {
         setEmployeePhone(employeePhone);
         setEmployeeEmail(employeeMail);
         setEmployeeAddress(employeeStreet + " " + employeeHouseNumber + " " + employeeCity);
-
-        this.employeeWorkdays = new ArrayList<>();
     }
 
 
     public Workday searchWorkdayByDate(LocalDate workDate) {
         Workday tempWorkday = null;
         for (Workday w : employeeWorkdays) {
-            if(w != null)
+            if(w != null && w.getWorkDate() != null)
             {
             if (w.getWorkDate().equals(workDate)) {
                 tempWorkday = w;

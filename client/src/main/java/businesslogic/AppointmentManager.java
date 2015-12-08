@@ -124,7 +124,7 @@ public class AppointmentManager {
         Appointment tempAppointment = null;
 
         for (Appointment a : data) {
-            if (a.getAppointmentNumber() == appointmentNr) {
+            if (a.getAppointmentNumber().equals(appointmentNr)) {
                 tempAppointment = a;
             }
         }
@@ -173,6 +173,16 @@ public class AppointmentManager {
             }
         }
         return tempAppointments;
+    }
+
+    public int getHighestAppointmentNumber() {
+        int returnInt = 0;
+        for(Appointment a : data) {
+            if (Integer.parseInt(a.getAppointmentNumber()) > returnInt) {
+                returnInt = Integer.parseInt(a.getAppointmentNumber());
+            }
+        }
+        return returnInt;
     }
     //endregion
 }

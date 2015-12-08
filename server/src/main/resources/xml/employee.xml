@@ -9,5 +9,7 @@
         <name>Mark van Turnhout</name>
         <employeeId>1</employeeId>
         <phone>0614744368</phone>
+        <employeeWorkdays/>
+        <employeeWorkdays/>
     </employee>
 </employees>

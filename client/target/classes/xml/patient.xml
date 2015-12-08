@@ -10,21 +10,6 @@
         <phone>0614740368</phone>
     </patient>
     <patient>
-        <address>asdasd Nederland asdas</address>
-        <ssn>2133123</ssn>
-        <city>asdas</city>
-        <country>12</country>
-        <dateOfBirth>11-11-2011</dateOfBirth>
-        <email>aaa</email>
-        <firstName>asd</firstName>
-        <fullName>asd asd</fullName>
-        <houseNumber>Nederland</houseNumber>
-        <lastName>asd</lastName>
-        <phone>121</phone>
-        <street>asdasd</street>
-        <zipCode>1111 bb</zipCode>
-    </patient>
-    <patient>
         <address>aaa Nederland aaaa</address>
         <ssn>122</ssn>
         <city>aaaa</city>
@@ -38,5 +23,35 @@
         <phone>111</phone>
         <street>aaa</street>
         <zipCode>1212 aa</zipCode>
+    </patient>
+    <patient>
+        <address>asd Nederland asd</address>
+        <ssn>1112222</ssn>
+        <city>asd</city>
+        <country>1</country>
+        <dateOfBirth>01-01-2000</dateOfBirth>
+        <email>asd</email>
+        <firstName>karel</firstName>
+        <fullName>karel tje</fullName>
+        <houseNumber>Nederland</houseNumber>
+        <lastName>tje</lastName>
+        <phone>1</phone>
+        <street>asd</street>
+        <zipCode>1111 cc</zipCode>
+    </patient>
+    <patient>
+        <address>test Nederland test</address>
+        <ssn>5</ssn>
+        <city>test</city>
+        <country>12</country>
+        <dateOfBirth>05-08-2005</dateOfBirth>
+        <email>aa</email>
+        <firstName>Karel</firstName>
+        <fullName>Karel test</fullName>
+        <houseNumber>Nederland</houseNumber>
+        <lastName>test</lastName>
+        <phone>12</phone>
+        <street>test</street>
+        <zipCode>1212 AA</zipCode>
     </patient>
 </patients>

@@ -1,24 +1,20 @@
 package presentation;
 
-import businesslogic.AppointmentManager;
 import businesslogic.DataManager;
-import businesslogic.EmployeeManager;
-import businesslogic.PatientManager;
 import domain.*;
 import javafx.application.Application;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -36,7 +32,7 @@ public class AppointmentGUI extends Application {
 
     private VBox vBox = new VBox();
     private BorderPane borderPane = new BorderPane();
-    TableColumn<Appointment, String> numberCol = new TableColumn<Appointment, String>("Nummer");
+    TableColumn numberCol = new TableColumn("Nummer");
     TableColumn startTimeCol = new TableColumn("Van");
     TableColumn stopTimeCol = new TableColumn("Tot");
     TableColumn fysioCol = new TableColumn("Fysio");
@@ -54,9 +50,9 @@ public class AppointmentGUI extends Application {
 
         //region Creating tabs
         pane = new TabPane();
-        appointmentTab = new Tab("Afspraak");
-        employeeTab = new Tab("Medewerker");
-        patientTab = new Tab("Patient");
+        appointmentTab = new Tab("Afspraak Maken");
+        employeeTab = new Tab("Afspraken Zoeken");
+        patientTab = new Tab("Overzicht Patienten");
         manageEmployeeTab = new Tab("Overzicht Werknemers");
 
         pane.getSelectionModel().select(appointmentTab);
@@ -64,30 +60,27 @@ public class AppointmentGUI extends Application {
         //adding action listeners
         pane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             switch (newValue.getText()) {
-                case "Afspraak":
+                case "Afspraak Maken":
                     break;
-                case "Medewerker":
-                    EmployeeGUI guiEmployee = new EmployeeGUI();
+                case "Afspraken Zoeken":
+                    SearchGUI guiEmployee = new SearchGUI();
                     try {
-                        dataManager.Save();
                         guiEmployee.start(stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
-                case "Patient":
-                    PatientGUI guiCustomer = new PatientGUI();
+                case "Overzicht Patienten":
+                    PatientGUI guiPatient = new PatientGUI();
                     try {
-                        dataManager.Save();
-                        guiCustomer.start(stage);
+                        guiPatient.start(stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case "Overzicht Werknemers":
-                    ManageEmployeeGUI guiManageEmploye = new ManageEmployeeGUI();
+                    EmployeeGUI guiManageEmploye = new EmployeeGUI();
                     try {
-                        dataManager.Save();
                         guiManageEmploye.start(stage);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -102,116 +95,29 @@ public class AppointmentGUI extends Application {
         numberCol.setCellValueFactory(
                 new PropertyValueFactory<Appointment, String>("appointmentNumber"));
 
-
-
         startTimeCol.setCellValueFactory(
                 new PropertyValueFactory<Appointment, LocalDate>("appointmentStartTimeString"));
-
-        startTimeCol.setOnEditCommit(
-                new EventHandler<CellEditEvent>() {
-                    @Override
-                    public void handle(CellEditEvent event) {
-
-                    }
-                }
-        );
-
 
         stopTimeCol.setCellValueFactory(
                 new PropertyValueFactory<Appointment, LocalDate>("appointmentStopTimeString"));
 
-        stopTimeCol.setOnEditCommit(
-                new EventHandler<CellEditEvent>() {
-                    @Override
-                    public void handle(CellEditEvent event) {
-
-                    }
-                }
-        );
-
-
         fysioCol.setCellValueFactory(
                 new PropertyValueFactory<Appointment, String>("appointmentFysioName"));
 
-        fysioCol.setOnEditCommit(
-                new EventHandler<CellEditEvent>() {
-                    @Override
-                    public void handle(CellEditEvent event) {
-
-                    }
-                }
-        );
-
-
         patientCol.setCellValueFactory(
                 new PropertyValueFactory<Appointment, String>("appointmentPatientName"));
-        patientCol.setOnEditCommit(
-                new EventHandler<CellEditEvent>() {
-                    @Override
-                    public void handle(CellEditEvent event) {
-
-                    }
-                }
-        );
-        //endregion
-
-        //region Refreshing of the list
-        FilteredList<Appointment> filteredData = new FilteredList<>(dataManager.appointmentManager.getData());
-        SortedList<Appointment> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(table.comparatorProperty());
-        table.setItems(sortedData);
-
-        for (Appointment aSortedData : sortedData) {
-            int length = 0;
-            if (aSortedData.getAppointmentStartTimeString().length() > length) {
-                length = aSortedData.getAppointmentStartTimeString().toString().length();
-                startTimeCol.setMinWidth(length*8.5);
-            }
-
-        }
-
-        for (Appointment aSortedData : sortedData) {
-            int length = 0;
-            if (aSortedData.getAppointmentNumber().toString().length() > length) {
-                length = aSortedData.getAppointmentNumber().toString().length();
-                numberCol.setMinWidth(length*8.5);
-            }
-        }
-
-        for (Appointment aSortedData : sortedData) {
-            int length = 0;
-            if (aSortedData.getAppointmentStopTimeString().toString().length() > length) {
-                length = aSortedData.getAppointmentStopTimeString().toString().length();
-                stopTimeCol.setMinWidth(length*8.5);
-            }
-        }
-
-        for (Appointment aSortedData : sortedData) {
-            int length = 0;
-            if (aSortedData.getAppointmentFysioName().length() > length) {
-                length = aSortedData.getAppointmentFysioName().length();
-                fysioCol.setMinWidth(length*8.5);
-            }
-        }
-
-        for (Appointment aSortedData : sortedData) {
-            int length = 0;
-            if (aSortedData.getAppointmentPatientName().length() > length) {
-                length = aSortedData.getAppointmentPatientName().length();
-                patientCol.setMinWidth(length*8.5);
-            }
-        }
-
         //endregion
 
         //region Creating Textfields
         DatePicker dp_AppointmentDate = new DatePicker();
-        dp_AppointmentDate.valueProperty().addListener((observable, oldValue, newValue) -> {});
+        dp_AppointmentDate.valueProperty().addListener((observable, oldValue, newValue) -> refresh(newValue));
         dp_AppointmentDate.setPromptText("Kies datum");
         dp_AppointmentDate.setValue(LocalDate.now());
+        refresh(dp_AppointmentDate.getValue());
 
         TextField appointmentNumber = new TextField();
         appointmentNumber.setPromptText("Nr");
+        appointmentNumber.setText(String.valueOf(new Integer(dataManager.appointmentManager.getHighestAppointmentNumber() + 1)));
 
         TextField appointmentStartTime = new TextField();
         appointmentStartTime.setPromptText("Van");
@@ -237,6 +143,7 @@ public class AppointmentGUI extends Application {
                 {
                     if (dataManager.appointmentManager.deleteAppointment(tempAppointment)) {
                         AlertBox.display("Bevestiging", "Afspraak " + tempAppointment.getAppointmentNumber() + " verwijderd");
+                        dataManager.Save();
                     } else {
                         AlertBox.display("Error", "Afspraak  " + tempAppointment.getAppointmentNumber() + " niet verwijderd");
                     }
@@ -246,7 +153,7 @@ public class AppointmentGUI extends Application {
 
         Button addAppointment = new Button("Voeg toe");
         addAppointment.setOnAction(e -> {
-            Appointment tempAppointment = null;
+            Appointment tempAppointment;
 
             if (appointmentNumber.getText().equals("")) {
                 AlertBox.display("Foutmelding", "Geen afspraaknummer ingevoerd");
@@ -286,6 +193,8 @@ public class AppointmentGUI extends Application {
 
                         Workday workday = new Workday(newAppointmentDate, newStartTime, newStopTime);
                         newFysio.addWorkday(workday);
+                        refresh(dp_AppointmentDate.getValue());
+                        dataManager.Save();
                     }
                 }
             }
@@ -312,5 +221,56 @@ public class AppointmentGUI extends Application {
         stage.setScene(scene);
         stage.show();
         stage.getIcons().add(new Image("/fysio_icon1.png"));
+    }
+
+    public void refresh(LocalDate date) {
+        //region Refreshing of the list
+        FilteredList<Appointment> filteredData = new FilteredList<>(dataManager.appointmentManager.searchWithWorkDate(date));
+        SortedList<Appointment> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(table.comparatorProperty());
+        table.setItems(sortedData);
+
+        for (Appointment aSortedData : sortedData) {
+            int length = 0;
+            if (aSortedData.getAppointmentStartTimeString().length() > length) {
+                length = aSortedData.getAppointmentStartTimeString().toString().length();
+                startTimeCol.setMinWidth(length * 8.5);
+            }
+
+        }
+
+        for (Appointment aSortedData : sortedData) {
+            int length = 0;
+            if (aSortedData.getAppointmentNumber().toString().length() > length) {
+                length = aSortedData.getAppointmentNumber().toString().length();
+                numberCol.setMinWidth(length * 8.5);
+            }
+        }
+
+        for (Appointment aSortedData : sortedData) {
+            int length = 0;
+            if (aSortedData.getAppointmentStopTimeString().toString().length() > length) {
+                length = aSortedData.getAppointmentStopTimeString().toString().length();
+                stopTimeCol.setMinWidth(length * 8.5);
+            }
+        }
+
+        for (Appointment aSortedData : sortedData) {
+            int length = 0;
+            if (aSortedData.getAppointmentFysioName().length() > length) {
+                length = aSortedData.getAppointmentFysioName().length();
+                fysioCol.setMinWidth(length * 8.5);
+            }
+        }
+
+        for (Appointment aSortedData : sortedData) {
+            int length = 0;
+            if (aSortedData.getAppointmentPatientName().length() > length) {
+                length = aSortedData.getAppointmentPatientName().length();
+                patientCol.setMinWidth(length * 8.5);
+            }
+        }
+
+        //endregion
     }
 }

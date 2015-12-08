@@ -1,12 +1,8 @@
 package presentation;
 
-import businesslogic.AppointmentManager;
 import businesslogic.DataManager;
-import businesslogic.PatientManager;
-import domain.Appointment;
 import domain.Patient;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,8 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
-import java.time.LocalDate;
 
 public class PatientGUI extends Application {
     //region Attributes and properties
@@ -30,7 +24,7 @@ public class PatientGUI extends Application {
     private TabPane pane = new TabPane();
     private Tab employeeTab = new Tab("Medewerker");
     private Tab appointmentTab = new Tab("Afspraak");
-    private Tab customerTab = new Tab("Patient");
+    private Tab patientTab = new Tab("Patient");
     private Tab manageEmployeeTab = new Tab("Overzicht Werknemers");
 
     private TextField patientBSN;
@@ -74,42 +68,41 @@ public class PatientGUI extends Application {
         Callback<TableColumn, TableCell> cellFactory =
                 p -> new EditingCellManageEmployee();
 
+        table.setItems(dataManager.patientManager.getData());
+
         //region Creating tabs
         pane = new TabPane();
-        appointmentTab = new Tab("Afspraak");
-        customerTab = new Tab("Patient");
-        employeeTab = new Tab("Medewerker");
+        appointmentTab = new Tab("Afspraak Maken");
+        employeeTab = new Tab("Afspraken Zoeken");
+        patientTab = new Tab("Overzicht Patienten");
         manageEmployeeTab = new Tab("Overzicht Werknemers");
 
-        pane.getSelectionModel().select(customerTab);
+        pane.getSelectionModel().select(patientTab);
 
         //adding action listeners
         pane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             switch (newValue.getText()) {
-                case "Afspraak":
+                case "Afspraak Maken":
                     AppointmentGUI guiAppointment = new AppointmentGUI();
                     try {
-                        dataManager.Save();
                         guiAppointment.start(stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
-                case "Medewerker":
-                    EmployeeGUI guiEmployee = new EmployeeGUI();
+                case "Afspraken Zoeken":
+                    SearchGUI guiEmployee = new SearchGUI();
                     try {
-                        dataManager.Save();
                         guiEmployee.start(stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
-                case "Patient":
+                case "Overzicht Patienten":
                     break;
                 case "Overzicht Werknemers":
-                    ManageEmployeeGUI guiManageEmployee = new ManageEmployeeGUI();
+                    EmployeeGUI guiManageEmployee = new EmployeeGUI();
                     try {
-                        dataManager.Save();
                         guiManageEmployee.start(stage);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -120,22 +113,21 @@ public class PatientGUI extends Application {
         //endregion
 
         //region Creating columns for tables
-
         bsnCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientBSN"));
-        fullNameCol.setCellFactory(
+        fullNameCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientFullName"));
-        addressCol.setCellFactory(
+        addressCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientAddress"));
-        countryCol.setCellFactory(
+        countryCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientCountry"));
         dateOfBirthCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientDateOfBirth"));
-        zipCodeCol.setCellFactory(
+        zipCodeCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientZipCode"));
-        phoneCol.setCellFactory(
+        phoneCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientPhone"));
-        mailCol.setCellFactory(
+        mailCol.setCellValueFactory(
                 new PropertyValueFactory<Patient, String>("patientEmail"));
         //endregion
 
@@ -202,7 +194,18 @@ public class PatientGUI extends Application {
 
         Button removeButton = new Button("Verwijder");
         removeButton.setOnAction(e -> {
+            Patient tempPatient = table.getSelectionModel().getSelectedItem();
 
+            if (ConfirmBox.display("Bevestiging", "Weet u zeker dat u " + tempPatient.getPatientFullName() + " wilt verwijderen?")) {
+                {
+                    if (dataManager.patientManager.removePatient(tempPatient)) {
+                        AlertBox.display("Bevestiging", "Patient " + tempPatient.getPatientFullName() + " verwijderd");
+                        dataManager.Save();
+                    } else {
+                        AlertBox.display("Error", "Patient " + tempPatient.getPatientFullName() + " niet verwijderd");
+                    }
+                }
+            }
         });
 
         Button addButton = new Button("Voeg Toe");
@@ -288,16 +291,12 @@ public class PatientGUI extends Application {
                     addZipCode.clear();
                     addPhone.clear();
                     addMail.clear();
+                    dataManager.Save();
                 }
 
             }
         });
-
-
-        searchButton = new Button("Zoek");
-        searchButton.setOnAction(e -> searchWithBSN());
         //endregion
-
 
         table.getColumns().addAll(bsnCol, fullNameCol, addressCol, countryCol, dateOfBirthCol, zipCodeCol, phoneCol, mailCol);
         vBox.getChildren().addAll(addBsn, addFirstName, addLastName, addStreet, addHouseNumber, addCity, addZipCode, addDateOfBirth, addPhone, addMail, addButton, removeButton);
@@ -310,8 +309,8 @@ public class PatientGUI extends Application {
         borderPane.setMargin(vBox, new Insets(12, 12, 12, 12));
         borderPane.setMargin(gridPane, new Insets(12, 12, 12, 12));
 
-        pane.getTabs().addAll(appointmentTab, employeeTab, customerTab, manageEmployeeTab);
-        customerTab.setContent(borderPane);
+        pane.getTabs().addAll(appointmentTab, employeeTab, patientTab, manageEmployeeTab);
+        patientTab.setContent(borderPane);
         pane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         Scene scene = new Scene(pane);
@@ -319,28 +318,5 @@ public class PatientGUI extends Application {
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    public void searchWithBSN() {
-
-        if (patientBSN.getText().equals("")) {
-            AlertBox.display("Foutmelding", "Geen medewerkersnummer ingevoerd");
-        } else {
-            Patient tempPatient = dataManager.patientManager.searchWithBSN(patientBSN.getText());
-
-            if (tempPatient != null) {
-                bsnLabel.setText(String.valueOf(tempPatient.getPatientBSN()));
-                nameLabel.setText(tempPatient.getPatientFullName());
-                adressLabel.setText(tempPatient.getPatientAddress());
-                zipcodeLabel.setText(tempPatient.getPatientZipCode());
-                cityLabel.setText(tempPatient.getPatientCity());
-                dateOfBirthLabel.setText(String.valueOf(tempPatient.getPatientDateOfBirth()));
-                phoneLabel.setText(tempPatient.getPatientPhone());
-                emailLabel.setText(tempPatient.getPatientEmail());
-
-            } else {
-                AlertBox.display("Foutmelding", "Geen patient gevonden met BSN: " + patientBSN.getText());
-            }
-        }
     }
 }

@@ -94,7 +94,7 @@ public class PatientManager {
     public Patient searchPatientWithName(String patientName) {
         Patient returnPatient = null;
         for (Patient e : data) {
-            if (e.getPatientFullName().equals(patientName)) {
+            if (e.getPatientFullName() != null && e.getPatientFullName().equals(patientName)) {
                 returnPatient = e;
             }
         }
@@ -125,8 +125,8 @@ public class PatientManager {
         Patient tempPatient = searchWithBSN(patient.getPatientBSN());
         boolean tempBool = false;
 
-        if (tempPatient == null) {
-            data.add(patient);
+        if (tempPatient != null) {
+            data.remove(patient);
             tempBool = true;
         }
 
