@@ -16,7 +16,6 @@ import java.util.List;
         public List<Workday> getWorkdays() { return workdays;}
 
         @XmlElement(name = "workday")
-
         public void setWorkdays( List<Workday> workdays)
         {
             this.workdays = workdays;

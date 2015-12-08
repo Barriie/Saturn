@@ -12,7 +12,7 @@ import java.time.LocalTime;
 /**
  * Created by Barrie on 31-10-2015.
  */
-@XmlRootElement(name = "Workday")
+@XmlRootElement(name = "workday")
 public class Workday {
     //region Attributes and properties
     private LocalDate workDate;
@@ -34,22 +34,36 @@ public class Workday {
 
     //region Getters and setters
 
-    @XmlElement(name = "workDate")
+    @XmlElement(name = "workdate")
     @XmlJavaTypeAdapter(DateAdapter.class)
     public LocalDate getWorkDate() {
         return workDate;
     }
 
-    @XmlElement(name = "startTime")
+    public void setWorkDate(LocalDate workDate) {
+        this.workDate = workDate;
+    }
+
+    @XmlElement(name = "starttime")
     @XmlJavaTypeAdapter(TimeAdapter.class)
     public LocalTime getStartTime() {
         return startTime;
     }
 
-    @XmlElement(name = "stopTime")
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+
+
+    @XmlElement(name = "stoptime")
     @XmlJavaTypeAdapter(TimeAdapter.class)
     public LocalTime getStopTime() {
         return stopTime;
     }
-    //endregion
+
+    public void setStopTime(LocalTime stopTime) {
+        this.stopTime = stopTime;
+    }
+//endregion
 }

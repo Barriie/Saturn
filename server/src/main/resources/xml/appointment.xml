@@ -10,6 +10,7 @@
             <name>Mark</name>
             <employeeId>1</employeeId>
             <phone>0614744368</phone>
+            <workdays/>
         </appointmentFysio>
         <appointmentFysioName>Mark</appointmentFysioName>
         <appointmentNumber>1</appointmentNumber>
@@ -29,8 +30,7 @@
             <name>Mark van Turnhout</name>
             <employeeId>1</employeeId>
             <phone>0614744368</phone>
-            <employeeWorkdays/>
-            <employeeWorkdays/>
+            <workdays/>
         </appointmentFysio>
         <appointmentFysioName>Mark van Turnhout</appointmentFysioName>
         <appointmentNumber>2</appointmentNumber>
@@ -52,5 +52,55 @@
         <appointmentPatientName>Walley O</appointmentPatientName>
         <appointmentStartTimeString>12:00</appointmentStartTimeString>
         <appointmentStopTimeString>13:00</appointmentStopTimeString>
+    </appointment>
+    <appointment>
+        <appointmentDate>2015-12-19</appointmentDate>
+        <appointmentFysio city="Tilburg" country="Nederland" houseNumber="17" street="Zwartvenseweg" postalCode="5044 PA">
+            <address>Zwartvenseweg 17 Tilburg</address>
+            <ssn>2</ssn>
+            <dateOfBirth>05-08-1992</dateOfBirth>
+            <mail>mlajturn@avans.nl</mail>
+            <function>Tester</function>
+            <name>Mark van Turnhout</name>
+            <employeeId>1</employeeId>
+            <phone>0614744368</phone>
+            <workdays>
+                <workday>
+                    <starttime>12:00</starttime>
+                    <stoptime>14:00</stoptime>
+                    <workdate>2015-12-09</workdate>
+                </workday>
+                <workday>
+                    <starttime>12:00</starttime>
+                    <stoptime>14:00</stoptime>
+                    <workdate>2015-12-09</workdate>
+                </workday>
+                <workday>
+                    <starttime>12:15</starttime>
+                    <stoptime>12:30</stoptime>
+                    <workdate>2015-12-19</workdate>
+                </workday>
+            </workdays>
+        </appointmentFysio>
+        <appointmentFysioName>Mark van Turnhout</appointmentFysioName>
+        <appointmentNumber>3</appointmentNumber>
+        <appointmentPatient>
+            <address>Jupiter Nederland Adessl</address>
+            <ssn>5</ssn>
+            <city>Adessl</city>
+            <country>3</country>
+            <dateOfBirth>01-01-2000</dateOfBirth>
+            <email>asad</email>
+            <firstName>Walley</firstName>
+            <fullName>Walley O</fullName>
+            <houseNumber>Nederland</houseNumber>
+            <lastName>O</lastName>
+            <phone>12</phone>
+            <street>Jupiter</street>
+            <zipCode>8888 PP</zipCode>
+        </appointmentPatient>
+        <appointmentPatientName>Walley O</appointmentPatientName>
+        <appointmentStartTimeString>12:15</appointmentStartTimeString>
+        <appointmentStopTimeString>12:30</appointmentStopTimeString>
     </appointment>
 </appointments>

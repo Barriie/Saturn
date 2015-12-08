@@ -9,6 +9,22 @@
         <name>Mark van Turnhout</name>
         <employeeId>1</employeeId>
         <phone>0614744368</phone>
-        <employeeWorkdays/>
+        <workdays>
+            <workday>
+                <starttime>12:00</starttime>
+                <stoptime>14:00</stoptime>
+                <workdate>2015-12-09</workdate>
+            </workday>
+            <workday>
+                <starttime>12:00</starttime>
+                <stoptime>14:00</stoptime>
+                <workdate>2015-12-09</workdate>
+            </workday>
+            <workday>
+                <starttime>12:15</starttime>
+                <stoptime>12:30</stoptime>
+                <workdate>2015-12-19</workdate>
+            </workday>
+        </workdays>
     </employee>
 </employees>

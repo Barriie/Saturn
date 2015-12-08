@@ -26,7 +26,6 @@ public class Employee {
     private SimpleStringProperty employeeMail = new SimpleStringProperty(this, "employeeMail");
     private SimpleStringProperty employeeAddress = new SimpleStringProperty(this, "employeeAddress");
 
-
     private ArrayList<Workday> employeeWorkdays= new ArrayList<>();
     //endregion
 
@@ -263,6 +262,8 @@ public class Employee {
         this.employeeMail.set(employeeMail);
     }
 
+    @XmlElementWrapper (name = "workdays")
+    @XmlElement (name = "workday")
     public ArrayList<Workday> getEmployeeWorkdays() {
         return employeeWorkdays;
     }
